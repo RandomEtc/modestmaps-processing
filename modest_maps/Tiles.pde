@@ -3,7 +3,7 @@ void doTilesTest() {
   println();
   println("tiles test");
   println();  
-  
+
   println( "1".equals(binary(1)) );
   println( "10".equals(binary(2)) );
   println( "11".equals(binary(3)) );
@@ -16,62 +16,63 @@ void doTilesTest() {
 
 /*
 >>> fromGoogleRoad(0, 0, 16)
-(0, 0, 1)
->>> fromGoogleRoad(10507, 25322, 1)
-(10507, 25322, 16)
->>> fromGoogleRoad(10482, 25333, 1)
-(10482, 25333, 16)
-
->>> toGoogleRoad(0, 0, 1)
-(0, 0, 16)
->>> toGoogleRoad(10507, 25322, 16)
-(10507, 25322, 1)
->>> toGoogleRoad(10482, 25333, 16)
-(10482, 25333, 1)
-
->>> fromGoogleAerial('tq')
-(0, 0, 1)
->>> fromGoogleAerial('tqtsqrqtrtttqsqsr')
-(10507, 25322, 16)
->>> fromGoogleAerial('tqtsqrqtqssssqtrt')
-(10482, 25333, 16)
-
->>> toGoogleAerial(0, 0, 1)
-'tq'
->>> toGoogleAerial(10507, 25322, 16)
-'tqtsqrqtrtttqsqsr'
->>> toGoogleAerial(10482, 25333, 16)
-'tqtsqrqtqssssqtrt'
-
->>> fromYahooRoad(0, 0, 17)
-(0, 0, 1)
->>> fromYahooRoad(10507, 7445, 2)
-(10507, 25322, 16)
->>> fromYahooRoad(10482, 7434, 2)
-(10482, 25333, 16)
-
->>> toYahooRoad(0, 0, 1)
-(0, 0, 17)
->>> toYahooRoad(10507, 25322, 16)
-(10507, 7445, 2)
->>> toYahooRoad(10482, 25333, 16)
-(10482, 7434, 2)
-
->>> fromYahooAerial(0, 0, 17)
-(0, 0, 1)
->>> fromYahooAerial(10507, 7445, 2)
-(10507, 25322, 16)
->>> fromYahooAerial(10482, 7434, 2)
-(10482, 25333, 16)
-
->>> toYahooAerial(0, 0, 1)
-(0, 0, 17)
->>> toYahooAerial(10507, 25322, 16)
-(10507, 7445, 2)
->>> toYahooAerial(10482, 25333, 16)
-(10482, 7434, 2)
-
+   (0, 0, 1)
+   >>> fromGoogleRoad(10507, 25322, 1)
+   (10507, 25322, 16)
+   >>> fromGoogleRoad(10482, 25333, 1)
+   (10482, 25333, 16)
+   
+   >>> toGoogleRoad(0, 0, 1)
+   (0, 0, 16)
+   >>> toGoogleRoad(10507, 25322, 16)
+   (10507, 25322, 1)
+   >>> toGoogleRoad(10482, 25333, 16)
+   (10482, 25333, 1)
+   
+   >>> fromGoogleAerial('tq')
+   (0, 0, 1)
+   >>> fromGoogleAerial('tqtsqrqtrtttqsqsr')
+   (10507, 25322, 16)
+   >>> fromGoogleAerial('tqtsqrqtqssssqtrt')
+   (10482, 25333, 16)
+   
+   >>> toGoogleAerial(0, 0, 1)
+   'tq'
+   >>> toGoogleAerial(10507, 25322, 16)
+   'tqtsqrqtrtttqsqsr'
+   >>> toGoogleAerial(10482, 25333, 16)
+   'tqtsqrqtqssssqtrt'
 */
+/*   
+   >>> fromYahooRoad(0, 0, 17)
+   (0, 0, 1)
+   >>> fromYahooRoad(10507, 7445, 2)
+   (10507, 25322, 16)
+   >>> fromYahooRoad(10482, 7434, 2)
+   (10482, 25333, 16)
+   
+   >>> toYahooRoad(0, 0, 1)
+   (0, 0, 17)
+   >>> toYahooRoad(10507, 25322, 16)
+   (10507, 7445, 2)
+   >>> toYahooRoad(10482, 25333, 16)
+   (10482, 7434, 2)
+   
+   >>> fromYahooAerial(0, 0, 17)
+   (0, 0, 1)
+   >>> fromYahooAerial(10507, 7445, 2)
+   (10507, 25322, 16)
+   >>> fromYahooAerial(10482, 7434, 2)
+   (10482, 25333, 16)
+   
+   >>> toYahooAerial(0, 0, 1)
+   (0, 0, 17)
+   >>> toYahooAerial(10507, 25322, 16)
+   (10507, 7445, 2)
+   >>> toYahooAerial(10482, 25333, 16)
+   (10482, 7434, 2)
+   
+   */
 
   Coordinate c = fromMicrosoftRoad("0");
   println(c.column == 0.0 && c.row == 0.0 && c.zoom == 1.0);
@@ -90,94 +91,111 @@ void doTilesTest() {
   println(d.column == 25322.0 && d.row == 10507.0 && d.zoom == 16.0);
   e = fromMicrosoftAerial("0230102033330212");
   println(e.column == 25333.0 && e.row == 10482.0 && e.zoom == 16.0);
- 
+
   println( "0".equals( toMicrosoftAerial(0, 0, 1) ) );
   println( "0230102122203031".equals(toMicrosoftAerial(10507, 25322, 16) ) );
   println( "0230102033330212".equals(toMicrosoftAerial(10482, 25333, 16) ) );
 
 }
 
+Coordinate fromGoogleRoad(Coordinate coord) {
+  // Return column, row, zoom for Google Road tile x, y, z.
+  return new Coordinate(coord.row, coord.column, 17 - coord.zoom);
+}
+
+Coordinate toGoogleRoad(Coordinate coord) {
+  // Return x, y, z for Google Road tile column, row, zoom.
+  return new Coordinate(coord.row, coord.column, 17 - coord.zoom);
+}
 
 
-/*
-String[] octalStrings = { "000", "001", "010", "011", "100", "101", "110", "111" };
+//googleFromCorners = {'t' { '00', 's' { '01', 'q' { '10', 'r' { '11'}
+//googleToCorners = {'00' { 't', '01' { 's', '10' { 'q', '11' { 'r'}
 
-def fromGoogleRoad(x, y, z) {
-    """ Return column, row, zoom for Google Road tile x, y, z.
-    """
-    col = x
-    row = y
-    zoom = 17 - z
-    return col, row, zoom
+Coordinate fromGoogleAerial(String s) {
+  // Return column, row, zoom for Google Aerial tile string.
+  String rowS = "";
+  String colS = "";
+  for (int i = 0; i < s.length(); i++) {
+    switch (s.charAt(i)) {
+    case 't':
+      rowS += '0';
+      colS += '0';
+      break;
+    case 's':
+      rowS += '0';
+      colS += '1';
+      break;
+    case 'q':
+      rowS += '1';
+      colS += '0';
+      break;
+    case 'r':
+      rowS += '1';
+      colS += '1';
+      break;
+    }
+  }
+  int row = unbinary(rowS);
+  int col = unbinary(colS);
+  int zoom = s.length() - 1;
+  row = (int)pow(2, zoom) - row - 1;
+  return new Coordinate( row, col, zoom );
+}
 
-def toGoogleRoad(col, row, zoom) {
-    """ Return x, y, z for Google Road tile column, row, zoom.
-    """
-    x = col
-    y = row
-    z = 17 - zoom
-    return col, row, z
-
-googleFromCorners = {'t' { '00', 's' { '01', 'q' { '10', 'r' { '11'}
-googleToCorners = {'00' { 't', '01' { 's', '10' { 'q', '11' { 'r'}
-
-def fromGoogleAerial(s) {
-    """ Return column, row, zoom for Google Aerial tile string.
-    """
-    row, col = map(fromBinaryString, zip(*[list(googleFromCorners[c]) for c in s]))
-    zoom = len(s) - 1
-    row = int(math.pow(2, zoom) - row - 1)
-    return col, row, zoom
-
-def toGoogleAerial(col, row, zoom) {
-    """ Return string for Google Road tile column, row, zoom.
-    """
-    x = col
-    y = int(math.pow(2, zoom) - row - 1)
-    z = zoom + 1
-    y, x = toBinaryString(y).rjust(z, '0'), toBinaryString(x).rjust(z, '0')
-    string = ''.join([googleToCorners[y[c]+x[c]] for c in range(z)])
-    return string
-*/
+String toGoogleAerial(Coordinate coord) {
+  // Return string for Google Road tile column, row, zoom.
+  int x = (int)coord.column;
+  int y = (int)pow(2, coord.zoom) - (int)coord.row - 1;
+  int z = (int)coord.zoom + 1;
+  String yb = binary(y,z);
+  String xb = binary(x,z);
+  String string = "";
+  String googleToCorners = "tsqr";
+  for (int c = 0; c < z; c++) {
+    string += googleToCorners.charAt(unbinary("" + yb.charAt(c) + xb.charAt(c)));
+  }
+  return string;
+}
 
 /*
 def fromYahoo(x, y, z) {
-    """ Return column, row, zoom for Yahoo x, y, z.
-    """
-    zoom = 18 - z
-    row = int(math.pow(2, zoom - 1) - y - 1)
-    col = x
-    return col, row, zoom
-
-def toYahoo(col, row, zoom) {
-    """ Return x, y, z for Yahoo tile column, row, zoom.
-    """
-    x = col
-    y = int(math.pow(2, zoom - 1) - row - 1)
-    z = 18 - zoom
-    return x, y, z
-
-def fromYahooRoad(x, y, z) {
-    """ Return column, row, zoom for Yahoo Road tile x, y, z.
-    """
-    return fromYahoo(x, y, z)
-
-def toYahooRoad(col, row, zoom) {
-    """ Return x, y, z for Yahoo Road tile column, row, zoom.
-    """
-    return toYahoo(col, row, zoom)
-
-def fromYahooAerial(x, y, z) {
-    """ Return column, row, zoom for Yahoo Aerial tile x, y, z.
-    """
-    return fromYahoo(x, y, z)
-
-def toYahooAerial(col, row, zoom) {
-    """ Return x, y, z for Yahoo Aerial tile column, row, zoom.
-    """
-    return toYahoo(col, row, zoom)
-
-*/
+ """ Return column, row, zoom for Yahoo x, y, z.
+ """
+ zoom = 18 - z
+ row = int(math.pow(2, zoom - 1) - y - 1)
+ col = x
+ return col, row, zoom
+ 
+ def toYahoo(col, row, zoom) {
+ """ Return x, y, z for Yahoo tile column, row, zoom.
+ """
+ x = col
+ y = int(math.pow(2, zoom - 1) - row - 1)
+ z = 18 - zoom
+ return x, y, z
+ 
+ def fromYahooRoad(x, y, z) {
+ """ Return column, row, zoom for Yahoo Road tile x, y, z.
+ """
+ return fromYahoo(x, y, z)
+ 
+ def toYahooRoad(col, row, zoom) {
+ """ Return x, y, z for Yahoo Road tile column, row, zoom.
+ """
+ return toYahoo(col, row, zoom)
+ 
+ def fromYahooAerial(x, y, z) {
+ """ Return column, row, zoom for Yahoo Aerial tile x, y, z.
+ """
+ return fromYahoo(x, y, z)
+ 
+ def toYahooAerial(col, row, zoom) {
+ """ Return x, y, z for Yahoo Aerial tile column, row, zoom.
+ """
+ return toYahoo(col, row, zoom)
+ 
+ */
 
 
 //microsoftFromCorners = {'0' { '00', '1' { '01', '2' { '10', '3' { '11'}

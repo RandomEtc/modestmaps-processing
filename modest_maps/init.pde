@@ -151,7 +151,13 @@ class TileRequest {
     // this is the time-consuming part
     try {
       for (int i = 0; i < urls.length; i++) {
-        imgs[i] = loadImage(urls[i]);
+        String type = urls[i].startsWith("http://mt") ? "png" : urls[i].startsWith("http://kh") ? "jpg" : null;
+        if (type != null) { 
+          imgs[i] = loadImage(urls[i], type);
+        }
+        else {
+          imgs[i] = loadImage(urls[i]);
+        }
       }
     }
     catch (Exception e) {
