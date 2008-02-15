@@ -359,7 +359,10 @@ public class MMap {
       try {
         for (int i = 0; i < urls.length; i++) {
           String type = urls[i].startsWith("http://mt") ? "png" : urls[i].startsWith("http://kh") ? "jpg" : null;
-          if (type != null) { 
+          if (type == null) {
+            type = urls[i].indexOf("png.maps.yimg") >= 0 ? "png" : urls[i].indexOf("aerial.maps.yimg") >= 0 ? "jpg" : null;
+          }
+	  if (type != null) { 
             imgs[i] = MMap.this.parent.loadImage(urls[i], type);
           }
           else {

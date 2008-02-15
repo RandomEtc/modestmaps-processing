@@ -2,47 +2,7 @@ package com.modestmaps;
 
 import processing.core.*;
 
-/*
-def fromYahoo(x, y, z) {
- """ Return column, row, zoom for Yahoo x, y, z.
- """
- zoom = 18 - z
- row = int(math.pow(2, zoom - 1) - y - 1)
- col = x
- return col, row, zoom
- 
- def toYahoo(col, row, zoom) {
- """ Return x, y, z for Yahoo tile column, row, zoom.
- """
- x = col
- y = int(math.pow(2, zoom - 1) - row - 1)
- z = 18 - zoom
- return x, y, z
- 
- def fromYahooRoad(x, y, z) {
- """ Return column, row, zoom for Yahoo Road tile x, y, z.
- """
- return fromYahoo(x, y, z)
- 
- def toYahooRoad(col, row, zoom) {
- """ Return x, y, z for Yahoo Road tile column, row, zoom.
- """
- return toYahoo(col, row, zoom)
- 
- def fromYahooAerial(x, y, z) {
- """ Return column, row, zoom for Yahoo Aerial tile x, y, z.
- """
- return fromYahoo(x, y, z)
- 
- def toYahooAerial(col, row, zoom) {
- """ Return x, y, z for Yahoo Aerial tile column, row, zoom.
- """
- return toYahoo(col, row, zoom)
- 
- */
-
 public class Tiles {
-
   
   public static Coordinate fromGoogleRoad(Coordinate coord) {
     // Return column, row, zoom for Google Road tile x, y, z.
@@ -100,6 +60,35 @@ public class Tiles {
     return string;
   }
 
+  public static Coordinate fromYahoo(Coordinate coord) {
+    // Return column, row, zoom for Yahoo x, y, z.
+    return new Coordinate((int)PApplet.pow(2, 18 - coord.zoom - 1), coord.column , 18 - coord.zoom);
+  }
+
+  public static Coordinate toYahoo(Coordinate coord) {
+    // Return x, y, z for Yahoo tile column, row, zoom.
+    return new Coordinate(coord.row, (int)PApplet.pow(2, coord.zoom - 1) - coord.row - 1, 18 - coord.zoom);
+  }
+
+  public static Coordinate fromYahooRoad(Coordinate coord) {
+    // Return column, row, zoom for Yahoo Road tile x, y, z.
+    return fromYahoo(coord);
+  }
+
+  public static Coordinate toYahooRoad(Coordinate coord) {
+    // Return x, y, z for Yahoo Road tile column, row, zoom.
+    return toYahoo(coord);
+  }
+
+  public static Coordinate fromYahooAerial(Coordinate coord) {
+    // Return column, row, zoom for Yahoo Aerial tile x, y, z.
+    return fromYahoo(coord);
+  }
+
+  public static Coordinate toYahooAerial(Coordinate coord) {
+    // Return x, y, z for Yahoo Aerial tile column, row, zoom.
+    return toYahoo(coord);
+  }
 
   public static Coordinate fromMicrosoft(String s) {
     // Return column, row, zoom for Microsoft tile string.
@@ -114,7 +103,6 @@ public class Tiles {
     return new Coordinate(PApplet.unbinary(colS), PApplet.unbinary(rowS), s.length());
   }
 
-
   public static String toMicrosoft(int col, int row, int zoom) {
     // Return string for Microsoft tile column, row, zoom
     String y = PApplet.binary(row, zoom);
@@ -125,7 +113,6 @@ public class Tiles {
     }
     return out;
   }
-
 
   public static Coordinate fromMicrosoftRoad(String s) {
     // Return column, row, zoom for Microsoft Road tile string.
