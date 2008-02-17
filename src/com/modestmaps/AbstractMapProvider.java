@@ -33,13 +33,19 @@ public abstract class AbstractMapProvider {
   }
 
   public Coordinate sourceCoordinate(Coordinate coordinate) {
-    float wrappedColumn = coordinate.column % PApplet.pow(2, coordinate.zoom);
+    float gridSize = PApplet.pow(2, coordinate.zoom);
 
+    float wrappedColumn = coordinate.column % gridSize;
     while (wrappedColumn < 0) {
-      wrappedColumn += PApplet.pow(2, coordinate.zoom);
+      wrappedColumn += gridSize;
     }
 
-    return new Coordinate(coordinate.row, wrappedColumn, coordinate.zoom);
+    float wrappedRow = coordinate.row % gridSize;
+    while (wrappedRow < 0) {
+      wrappedRow += gridSize;
+    }
+
+    return new Coordinate(wrappedRow, wrappedColumn, coordinate.zoom);
   }
 
   /** since we're often given four tile servers to pick from */

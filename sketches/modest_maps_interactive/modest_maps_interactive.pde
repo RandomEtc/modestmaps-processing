@@ -42,7 +42,7 @@ void draw() {
 //  println(zoom0Length + " --> " + sideLength);
 
   // 0 when sideLength == 256, 1 when sideLength == 512, 2 when sideLength == 1024
-  int zoom = min(20, max(0, (int)round(log(sideLength/zoom0Length) / log(2))));
+  int zoom = min(20, max(1, (int)round(log(sideLength/zoom0Length) / log(2))));
 
   int cols = (int)pow(2,zoom);
   int rows = (int)pow(2,zoom);
@@ -53,10 +53,10 @@ void draw() {
 //  println("screenCols: " + screenCols);
 
   // find the biggest box the screen would fit in, aligned with the map:
-  float screenMinX = -tx;
-  float screenMinY = -ty;
-  float screenMaxX = width-tx;
-  float screenMaxY = height-ty;
+  float screenMinX = 0;
+  float screenMinY = 0;
+  float screenMaxX = width;
+  float screenMaxY = height;
 //  println("screen: " + nf(screenMinX,1,3) + " " + nf(screenMinY,1,3) + " : " + nf(screenMaxX,1,3) + " " + nf(screenMaxY,1,3));
   // TODO align this box!
   
@@ -67,39 +67,55 @@ void draw() {
   int maxRow = (int)ceil(rows * (screenMaxY-minY) / (maxY-minY));
 //  println("row/col: " + minCol + ", " + minRow + " : " + maxCol + ", " + maxRow);
 
+  minCol -= 1;
+  minRow -= 1;
+  maxCol += 1;
+  maxRow += 1;
+
+  Vector visibleKeys = new Vector();
+
   pushMatrix();
   scale(1.0/pow(2,zoom));
   for (int col = minCol; col <= maxCol; col++) {
     for (int row = minRow; row <= maxRow; row++) {
-      Coordinate coord = new Coordinate(row,col,zoom);
-      String coordKey = coord.toString();
-      if (images.containsKey(coordKey)) {
-        PImage tile = (PImage)images.get(coord.toString());
+      Coordinate coord = provider.sourceCoordinate(new Coordinate(row,col,zoom));
+      coord.row = round(coord.row);
+      coord.column = round(coord.column);
+      coord.zoom = round(coord.zoom);
+      visibleKeys.add(coord);
+      if (images.containsKey(coord)) {
+        PImage tile = (PImage)images.get(coord);
         image(tile,col*256,row*256,256,256);
       }
       else {
-        if (!pending.containsKey(coordKey)) {
-          grabTile(coord);
-        }
+        grabTile(coord);
         fill(col >= 0 && col < cols && row >= 0 && row < rows ? 128 : 80);
         stroke(255);
         rect(col*256,row*256,256,256);
-      }    
-      fill(255);
-      noStroke();
-      textAlign(LEFT, TOP);
-      text("c:"+col+" "+"r:"+row+" "+"z:"+zoom, col*256, row*256);
+        fill(255);
+        noStroke();
+        textAlign(LEFT, TOP);
+        text("c:"+col+" "+"r:"+row+" "+"z:"+zoom, col*256, row*256);
 /*      textAlign(RIGHT, TOP);
-      text("c:"+col+" "+"r:"+row, (1+col)*256, row*256);
-      textAlign(LEFT, BOTTOM);
-      text("c:"+col+" "+"r:"+row, col*256, (1+row)*256);
-      textAlign(RIGHT, BOTTOM);
-      text("c:"+col+" "+"r:"+row, (1+col)*256, (1+row)*256); */
+        text("c:"+col+" "+"r:"+row, (1+col)*256, row*256);
+        textAlign(LEFT, BOTTOM);
+        text("c:"+col+" "+"r:"+row, col*256, (1+row)*256);
+        textAlign(RIGHT, BOTTOM);
+        text("c:"+col+" "+"r:"+row, (1+col)*256, (1+row)*256); */
+      }    
     }
   }
   popMatrix();
   
   popMatrix();
+
+//  println(pending.size() + " pending...");
+//  println(queue.size() + " in queue, pruning...");
+  queue.retainAll(visibleKeys);
+//  println(queue.size() + " in queue");
+//  println();
+
+  processQueue();
   
   if (keyPressed) {
 /*    if (key == CODED) {
@@ -138,13 +154,18 @@ void mouseDragged() {
   ty += ry;
 }
 
-Hashtable pending = new Hashtable();
-Hashtable images = new Hashtable();
+// loading tiles
+Hashtable pending = new Hashtable(); // coord.toString() -> TileLoader
+// loaded tiles
+Hashtable images = new Hashtable();  // coord.toString() -> PImage
+// coords waiting to load
+Vector queue = new Vector(); // coord
 
 void grabTile(Coordinate coord) {
-  Thread thread = new Thread(new TileLoader(coord));
-  pending.put(coord.toString(), thread);
-  thread.start(); // TODO throttle this
+  if (!pending.containsKey(coord) && !queue.contains(coord) && !images.containsKey(coord)) {
+//    println("adding " + coord.toString() + " to queue");
+    queue.add(coord);
+  }
 }
 
 class TileLoader implements Runnable {
@@ -156,8 +177,21 @@ class TileLoader implements Runnable {
     String url = provider.getTileUrls(coord)[0];
     println("loading: " + url);
     PImage img = loadImage(url); // TODO: layered tiles
-    println("loaded: " + url);
-    images.put(coord.toString(), img);
-    pending.remove(coord.toString());
+//    println("loaded: " + url);
+    tileDone(coord, img);
   }
+}
+
+void tileDone(Coordinate coord, PImage img) {
+  images.put(coord, img);
+  pending.remove(coord);  
+}
+
+void processQueue() {
+  while (pending.size() < 4 && queue.size() > 0) {
+    Coordinate coord = (Coordinate)queue.remove(0);
+    TileLoader tileLoader = new TileLoader(coord);
+    pending.put(coord, tileLoader);
+    new Thread(tileLoader).start();
+  }  
 }

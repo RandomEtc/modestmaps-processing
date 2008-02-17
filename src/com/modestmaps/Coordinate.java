@@ -18,6 +18,16 @@ public class Coordinate {
     return "(" + PApplet.nf(row,1,3) + ", " + PApplet.nf(column,1,3) + " @" + PApplet.nf(zoom,1,3) + ")";
   }
 
+  public boolean equals(Object o) {
+    Coordinate c = (Coordinate)o;
+    //return PApplet.abs(c.row - row) < PApplet.EPSILON && PApplet.abs(c.column - column) < PApplet.EPSILON && PApplet.abs(c.zoom -  zoom) < PApplet.EPSILON;
+    return c.row == row && c.column == column && c.zoom == zoom;
+  }
+
+  public int hashCode() {
+    return toString().hashCode();
+  }
+
   public Coordinate copy() {
     return new Coordinate(row, column, zoom);
   }
