@@ -6,7 +6,7 @@ PanButton up, down, left, right;
 Button[] buttons;
 
 void setup() {
-  size(screen.width, screen.height);
+  size(screen.width/2, screen.height/2);
   smooth();
 
   addMouseWheelListener(new java.awt.event.MouseWheelListener() { 
@@ -23,7 +23,6 @@ void setup() {
 
   out = new ZoomButton(5,5,14,14,false);
   in = new ZoomButton(22,5,14,14,true);
-
   up = new PanButton(14,25,14,14,UP);
   down = new PanButton(14,57,14,14,DOWN);
   left = new PanButton(5,41,14,14,LEFT);
@@ -31,6 +30,8 @@ void setup() {
 
   buttons = new Button[] { 
     in, out, up, down, left, right     };
+
+  textFont(createFont("Helvetica", 12), 12);
 
 }
 
@@ -78,8 +79,15 @@ void draw() {
     }
   }
 
-  //  println(map.getCenter());  
-  //  println(map.pointLocation(new Point2f(width/2, height/2)));
+  Location location = map.pointLocation(mouseX, mouseY);
+  
+  fill(0);
+  noStroke();
+  rect(5, height-5-g.textSize, textWidth(location.toString()), g.textSize+textDescent());
+  
+  fill(255);
+  textAlign(LEFT, BOTTOM);
+  text(location.toString(), 5, height-5);
 
 }
 

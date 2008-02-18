@@ -62,6 +62,7 @@ public class InteractiveMap implements PConstants {
 
   }
 
+  /** draw the map on the given PApplet */
   void draw() {
 
     // remember smooth setting so it can be reset 
@@ -82,8 +83,6 @@ public class InteractiveMap implements PConstants {
     float minY = p.screenY(0,0);
     float maxX = p.screenX(TILE_WIDTH, TILE_HEIGHT);
     float maxY = p.screenY(TILE_WIDTH, TILE_HEIGHT);
-    p.println(minX + " " + minY);
-    p.println(maxX + " " + maxY);
 
     // what power of 2 are we at?
     // 0 when scale is around 1, 1 when scale is around 2, 
@@ -94,8 +93,6 @@ public class InteractiveMap implements PConstants {
     // (this is basically (int)sc, but let's derive from zoom to be sure 
     int cols = (int)p.pow(2,zoom);
     int rows = (int)p.pow(2,zoom);
-
-//    p.println(cols + " " + rows);
 
     // find the biggest box the screen would fit in:, aligned with the map:
     float screenMinX = 0;
@@ -162,8 +159,7 @@ public class InteractiveMap implements PConstants {
           // or if we have any of the children
           if (!gotParent) {
             Coordinate zoomed = coord.zoomBy(1).container();
-            Coordinate[] kids = new Coordinate[] { 
-              zoomed, zoomed.right(), zoomed.down(), zoomed.right().down()                         }; 
+            Coordinate[] kids = { zoomed, zoomed.right(), zoomed.down(), zoomed.right().down() }; 
             for (int i = 0; i < kids.length; i++) {
               zoomed = kids[i];
               // make sure we still have ints:
@@ -201,10 +197,7 @@ public class InteractiveMap implements PConstants {
 
         if (images.containsKey(coord)) {
           PImage tile = (PImage)images.get(coord);
-          p.image(tile,coord.column*256,coord.row*256,256,256);
-//          if (p.frameCount % 100 == 0) {
-//            p.println(p.screenX(coord.column*256,coord.row*256) + ", " + p.screenY(coord.column*256,coord.row*256));
-//          }
+          p.image(tile,coord.column*TILE_WIDTH,coord.row*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT);
           if (recentImages.contains(tile)) {
             recentImages.remove(tile);
           }
@@ -216,28 +209,27 @@ public class InteractiveMap implements PConstants {
 
     p.popMatrix();
 
-    //  println(pending.size() + " pending...");
-    //  println(queue.size() + " in queue, pruning...");
-    queue.retainAll(visibleKeys); // stop fetching things we can't see
-    //  println(queue.size() + " in queue");
-    //  println();
+    // stop fetching things we can't see:
+    // (visibleKeys also has the parents and children, if needed, but that shouldn't matter)
+    queue.retainAll(visibleKeys);
 
     // sort what's left by distance from center:
     queueSorter.setCenter(new Coordinate( (minRow + maxRow) / 2.0f, (minCol + maxCol) / 2.0f, zoom));
-    //    println("center: " + center);
     Collections.sort(queue, queueSorter);
 
     // load up to 4 more things:
     processQueue();
 
+    // clear some images away if we have too many...
     if (recentImages.size() > MAX_IMAGES_TO_KEEP) {
-      //println(recentImages.size() + " images in memory, removing...");
       recentImages.subList(0, recentImages.size()-MAX_IMAGES_TO_KEEP).clear();
-      //println(recentImages.size() + " images in memory");
       images.values().retainAll(recentImages);
     }
 
-    if (smooth) p.smooth();
+    // restore smoothing, if needed
+    if (smooth) {
+      p.smooth();
+    }
 
   } 
 
@@ -251,8 +243,8 @@ public class InteractiveMap implements PConstants {
   }
 
   Coordinate getCenterCoordinate() {
-    float row = (float)(ty*sc/-256.0);
-    float column = (float)(tx*sc/-256.0);
+    float row = (float)(ty*sc/-TILE_WIDTH);
+    float column = (float)(tx*sc/-TILE_HEIGHT);
     float zoom = zoomForScale((float)sc);
     return new Coordinate(row, column, zoom); 
   }
@@ -260,8 +252,8 @@ public class InteractiveMap implements PConstants {
   void setCenter(Coordinate center) {
     //println("setting center to " + center);
     sc = p.pow(2.0f, center.zoom);
-    tx = -256.0*center.column/sc;
-    ty = -256.0*center.row/sc;
+    tx = -TILE_WIDTH*center.column/sc;
+    ty = -TILE_HEIGHT*center.row/sc;
   }
 
   void setCenter(Location location) {
@@ -311,9 +303,6 @@ public class InteractiveMap implements PConstants {
     pending.clear();
   }
 
-  // TODO: move constructor args to match:
-  //float width, float height, boolean draggable, AbstractMapProvider provider, Location[] extent
-
   Point2f locationPoint(Location location) {
     PMatrix m = new PMatrix();
     m.translate(width/2, height/2);
@@ -323,13 +312,17 @@ public class InteractiveMap implements PConstants {
     Coordinate coord = provider.locationCoordinate(location).zoomTo(0);
     float[] out = new float[3];
     m.mult3(new float[] {
-      coord.column*256.0f, coord.row*256.0f, 0    }
+      coord.column*TILE_WIDTH, coord.row*TILE_HEIGHT, 0    }
     , out);
 
     return new Point2f(out[0], out[1]);
   }
 
   Location pointLocation(Point2f point) {
+    return pointLocation(point.x, point.y); 
+  }
+
+  Location pointLocation(float x, float y) {
 
     // TODO: create this matrix once and keep it around for drawing and projecting
     PMatrix m = new PMatrix();
@@ -344,11 +337,11 @@ public class InteractiveMap implements PConstants {
     , tl);
     float br[] = new float[3];    
     m.mult3(new float[] { 
-      256,256,0     }
+      TILE_WIDTH, TILE_HEIGHT, 0     }
     , br);
 
-    float col = (point.x - tl[0]) / (br[0] - tl[0]);
-    float row = (point.y - tl[1]) / (br[1] - tl[1]);
+    float col = (x - tl[0]) / (br[0] - tl[0]);
+    float row = (y - tl[1]) / (br[1] - tl[1]);
     Coordinate coord = new Coordinate(row, col, 0);
 
     return provider.coordinateLocation(coord);    
@@ -445,13 +438,10 @@ public class InteractiveMap implements PConstants {
       this.coord = coord; 
     }
     public void run() {
-      p.println("loading " + coord);
       String[] urls = provider.getTileUrls(coord);
-      //      p.println("loading " + urls[0]);
-      PImage img = p.loadImage(urls[0], "unknown");
+      PImage img = p.loadImage(urls[0], "unknown"); // use unknown to let loadImage decide
       if (img != null) {
         for (int i = 1; i < urls.length; i++) {
-          //          p.println("loading " + urls[i]);
           PImage img2 = p.loadImage(urls[i], "unknown");
           if (img2 != null) {
             img.blend(img2, 0, 0, img.width, img.height, 0, 0, img.width, img.height, BLEND);
