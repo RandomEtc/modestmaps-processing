@@ -1,4 +1,4 @@
-package com.modestmaps;
+package com.modestmaps.core;
 
 public class MapCenter {
 

@@ -1,66 +1,69 @@
+package com.modestmaps;
 
-import com.modestmaps.*;
 import processing.core.*;
 import java.util.*;
+import com.modestmaps.geo.*;
+import com.modestmaps.core.*;
+import com.modestmaps.providers.*;
 
 public class InteractiveMap implements PConstants {
 
   // I have made the dumb mistake of getting these wrong before...
   // it's REALLY unlikely you'll want to change them:
-  int TILE_WIDTH = 256;
-  int TILE_HEIGHT = 256;
+  public int TILE_WIDTH = 256;
+  public int TILE_HEIGHT = 256;
   
   // unavoidable right now, for loadImage and float maths
-  PApplet p;
+  public PApplet p;
 
   // pan and zoom
-  double tx = -TILE_WIDTH/2; // half the world width, at zoom 0
-  double ty = -TILE_HEIGHT/2; // half the world height, at zoom 0
-  double sc = 1;
+  public double tx = -TILE_WIDTH/2; // half the world width, at zoom 0
+  public double ty = -TILE_HEIGHT/2; // half the world height, at zoom 0
+  public double sc = 1;
 
   // limit simultaneous calls to loadImage
-  int MAX_PENDING = 4;
+  public int MAX_PENDING = 4;
   
   // limit tiles in memory
   // 256 would be 64 MB, you may want to lower this quite a bit for your app
-  int MAX_IMAGES_TO_KEEP = 256;
+  public int MAX_IMAGES_TO_KEEP = 256;
 
   // upping this can help appearances when zooming out, but also loads many more tiles
-  int GRID_PADDING = 1;
+  public int GRID_PADDING = 1;
 
   // what kinda maps?
-  AbstractMapProvider provider;
+  public AbstractMapProvider provider;
 
   // how big?
-  float width, height;
+  public float width, height;
 
   // loading tiles
-  Hashtable pending = new Hashtable(); // coord -> TileLoader
+  public Hashtable pending = new Hashtable(); // coord -> TileLoader
   // loaded tiles
-  Hashtable images = new Hashtable();  // coord -> PImage
+  public Hashtable images = new Hashtable();  // coord -> PImage
   // coords waiting to load
-  Vector queue = new Vector();
+  public Vector queue = new Vector();
   // a list of the most recent MAX_IMAGES_TO_KEEP PImages we've seen
-  Vector recentImages = new Vector();
+  public Vector recentImages = new Vector();
 
   // for sorting coordinates by zoom
-  ZoomComparator zoomComparator = new ZoomComparator();
+  public ZoomComparator zoomComparator = new ZoomComparator();
 
   // for loading tiles from the inside first
-  QueueSorter queueSorter = new QueueSorter();
+  public QueueSorter queueSorter = new QueueSorter();
 
   /** default to Microsoft Hybrid */
-  InteractiveMap(PApplet p) {
+  public InteractiveMap(PApplet p) {
     this(p, new Microsoft.HybridProvider());
   }
 
   /** new map using applet width and height, and given provider */
-  InteractiveMap(PApplet p, AbstractMapProvider provider) {
+  public InteractiveMap(PApplet p, AbstractMapProvider provider) {
     this(p, provider, p.width, p.height);
   }
 
   /** make a new interactive map, using the given provider, of the given width and height */
-  InteractiveMap(PApplet p, AbstractMapProvider provider, float width, float height) {
+  public InteractiveMap(PApplet p, AbstractMapProvider provider, float width, float height) {
 
     this.p = p;
     this.provider = provider;
@@ -73,7 +76,7 @@ public class InteractiveMap implements PConstants {
   }
 
   /** draw the map on the given PApplet */
-  void draw() {
+  public void draw() {
 
     // remember smooth setting so it can be reset 
     boolean smooth = p.g.smooth;
@@ -244,50 +247,50 @@ public class InteractiveMap implements PConstants {
   } 
 
   /** @return zoom level of currently visible tile layer */
-  int getZoom() {
+  public int getZoom() {
     return bestZoomForScale((float)sc);
   }
 
-  Location getCenter() {
+  public Location getCenter() {
     return provider.coordinateLocation(getCenterCoordinate());
   }
 
-  Coordinate getCenterCoordinate() {
+  public Coordinate getCenterCoordinate() {
     float row = (float)(ty*sc/-TILE_WIDTH);
     float column = (float)(tx*sc/-TILE_HEIGHT);
     float zoom = zoomForScale((float)sc);
     return new Coordinate(row, column, zoom); 
   }
 
-  void setCenter(Coordinate center) {
+  public void setCenter(Coordinate center) {
     //println("setting center to " + center);
     sc = p.pow(2.0f, center.zoom);
     tx = -TILE_WIDTH*center.column/sc;
     ty = -TILE_HEIGHT*center.row/sc;
   }
 
-  void setCenter(Location location) {
+  public void setCenter(Location location) {
     setCenter(provider.locationCoordinate(location).zoomTo(getZoom()));
   }
 
-  void setCenterZoom(Location location, int zoom) {
+  public void setCenterZoom(Location location, int zoom) {
     setCenter(provider.locationCoordinate(location).zoomTo(zoom));
   }
 
   /** sets scale according to given zoom level, should leave you with pixel perfect tiles */
-  void setZoom(int zoom) {
+  public void setZoom(int zoom) {
     sc = p.pow(2.0f, zoom-1); 
   }
 
-  void zoom(int dir) {
+  public void zoom(int dir) {
     sc = p.pow(2.0f, getZoom()+dir); 
   }
 
-  void zoomIn() {
+  public void zoomIn() {
     sc = p.pow(2.0f, getZoom()+1); 
   }  
 
-  void zoomOut() {
+  public void zoomOut() {
     sc = p.pow(2.0f, getZoom()-1); 
   }
 
@@ -302,11 +305,11 @@ public class InteractiveMap implements PConstants {
 
   //	    public function getCenterZoom():Array
 
-  AbstractMapProvider getMapProvider() {
+  public AbstractMapProvider getMapProvider() {
     return this.provider;
   }
 
-  void setMapProvider(AbstractMapProvider provider) {
+  public void setMapProvider(AbstractMapProvider provider) {
     if (this.provider.getClass() != provider.getClass()) {
       this.provider = provider;
       images.clear();
@@ -315,7 +318,7 @@ public class InteractiveMap implements PConstants {
     }
   }
 
-  Point2f locationPoint(Location location) {
+  public Point2f locationPoint(Location location) {
     PMatrix m = new PMatrix();
     m.translate(width/2, height/2);
     m.scale((float)sc);
@@ -330,11 +333,11 @@ public class InteractiveMap implements PConstants {
     return new Point2f(out[0], out[1]);
   }
 
-  Location pointLocation(Point2f point) {
+  public Location pointLocation(Point2f point) {
     return pointLocation(point.x, point.y); 
   }
 
-  Location pointLocation(float x, float y) {
+  public Location pointLocation(float x, float y) {
 
     // TODO: create this matrix once and keep it around for drawing and projecting
     PMatrix m = new PMatrix();
@@ -360,25 +363,25 @@ public class InteractiveMap implements PConstants {
   }
 
   // TODO: pan by proportion of screen size, not by coordinate grid
-  void panUp() {
+  public void panUp() {
     setCenter(getCenterCoordinate().up());
   }
-  void panDown() {
+  public void panDown() {
     setCenter(getCenterCoordinate().down());
   }
-  void panLeft() {
+  public void panLeft() {
     setCenter(getCenterCoordinate().left());
   }
-  void panRight() {
+  public void panRight() {
     setCenter(getCenterCoordinate().right());
   }
 
-  void panAndZoomIn(Location location) {
+  public void panAndZoomIn(Location location) {
     // TODO: animate
     setCenterZoom(location, getZoom() + 1);
   }
 
-  void panTo(Location location) {
+  public void panTo(Location location) {
     // TODO: animate
     setCenter(location);
   }
@@ -409,21 +412,21 @@ public class InteractiveMap implements PConstants {
 
   ///////////////////////////////////////////////////////////////////////
 
-  float scaleForZoom(int zoom) {
+  public float scaleForZoom(int zoom) {
     return p.pow(2.0f, zoom);
   }
 
-  float zoomForScale(float scale) {
+  public float zoomForScale(float scale) {
     return p.log(scale) / p.log(2);
   }
 
-  int bestZoomForScale(float scale) {
+  public int bestZoomForScale(float scale) {
     return (int)p.min(20, p.max(1, (int)p.round(p.log(scale) / p.log(2))));
   }
 
   //////////////////////////////////////////////////////////////////////////
 
-  void mouseDragged() {
+  public void mouseDragged() {
     double dx = (double)(p.mouseX - p.pmouseX) / sc;
     double dy = (double)(p.mouseY - p.pmouseY) / sc;
     //    float angle = radians(-a);
@@ -437,14 +440,14 @@ public class InteractiveMap implements PConstants {
 
   /////////////////////////////////////////////////////////////////
 
-  void grabTile(Coordinate coord) {
+  public void grabTile(Coordinate coord) {
     if (!pending.containsKey(coord) && !queue.contains(coord) && !images.containsKey(coord)) {
       //    println("adding " + coord.toString() + " to queue");
       queue.add(coord);
     }
   }
 
-  class TileLoader implements Runnable {
+  public class TileLoader implements Runnable {
     Coordinate coord;
     TileLoader(Coordinate coord) {
       this.coord = coord; 
@@ -466,7 +469,7 @@ public class InteractiveMap implements PConstants {
 
   // TODO: there could be issues when this is called from within a thread
   // probably needs synchronizing on images / pending / queue
-  void tileDone(Coordinate coord, PImage img) {
+  public void tileDone(Coordinate coord, PImage img) {
     // check if we're still waiting for this (new provider clears pending)
     // also check if we got something
     if (pending.containsKey(coord) && img != null) {
@@ -486,7 +489,7 @@ public class InteractiveMap implements PConstants {
     }
   }
 
-  void processQueue() {
+  public void processQueue() {
     while (pending.size() < MAX_PENDING && queue.size() > 0) {
       Coordinate coord = (Coordinate)queue.remove(0);
       TileLoader tileLoader = new TileLoader(coord);
@@ -495,7 +498,7 @@ public class InteractiveMap implements PConstants {
     }  
   }
 
-  class QueueSorter implements Comparator {
+  public class QueueSorter implements Comparator {
     Coordinate center;
     public void setCenter(Coordinate center) {
       this.center = center;
@@ -524,7 +527,7 @@ public class InteractiveMap implements PConstants {
     }
   }
 
-  class ZoomComparator implements Comparator {
+  public class ZoomComparator implements Comparator {
     public int compare(Object o1, Object o2) {
       Coordinate c1 = (Coordinate)o1;
       Coordinate c2 = (Coordinate)o2;

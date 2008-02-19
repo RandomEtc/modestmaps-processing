@@ -1,5 +1,9 @@
 
-package com.modestmaps;
+package com.modestmaps.providers;
+
+import processing.core.*;
+import com.modestmaps.core.*;
+import com.modestmaps.geo.*;
 
 public class Yahoo {
 
@@ -14,7 +18,7 @@ public class Yahoo {
     }
   
     public static String getZoomString(Coordinate coordinate) {
-      coordinate = Tiles.toYahoo(coordinate);
+      coordinate = toYahoo(coordinate);
       return "x="+(int)coordinate.column+"&y="+(int)coordinate.row+"&z="+ (int)coordinate.zoom;
     }
 
@@ -46,6 +50,36 @@ public class Yahoo {
       String over = "http://us.maps3.yimg.com/aerial.maps.yimg.com/png?v="+HYBRID_VERSION+"&t=h&"+getZoomString(sourceCoordinate(coordinate));
       return new String[] { under, over };
     }
+  }
+
+  public static Coordinate fromYahoo(Coordinate coord) {
+    // Return column, row, zoom for Yahoo x, y, z.
+    return new Coordinate((int)PApplet.pow(2, 18 - coord.zoom - 1), coord.column , 18 - coord.zoom);
+  }
+
+  public static Coordinate toYahoo(Coordinate coord) {
+    // Return x, y, z for Yahoo tile column, row, zoom.
+    return new Coordinate(coord.row, (int)PApplet.pow(2, coord.zoom - 1) - coord.row - 1, 18 - coord.zoom);
+  }
+
+  public static Coordinate fromYahooRoad(Coordinate coord) {
+    // Return column, row, zoom for Yahoo Road tile x, y, z.
+    return fromYahoo(coord);
+  }
+
+  public static Coordinate toYahooRoad(Coordinate coord) {
+    // Return x, y, z for Yahoo Road tile column, row, zoom.
+    return toYahoo(coord);
+  }
+
+  public static Coordinate fromYahooAerial(Coordinate coord) {
+    // Return column, row, zoom for Yahoo Aerial tile x, y, z.
+    return fromYahoo(coord);
+  }
+
+  public static Coordinate toYahooAerial(Coordinate coord) {
+    // Return x, y, z for Yahoo Aerial tile column, row, zoom.
+    return toYahoo(coord);
   }
 
 }

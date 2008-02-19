@@ -1,4 +1,6 @@
-package com.modestmaps;
+package com.modestmaps.geo;
+
+import com.modestmaps.core.Point2f;
 
 public class Transformation {
 

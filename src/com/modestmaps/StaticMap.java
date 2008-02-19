@@ -1,9 +1,12 @@
 package com.modestmaps;
 
+import com.modestmaps.geo.*;
+import com.modestmaps.core.*;
+import com.modestmaps.providers.*;
 import processing.core.*;
 import java.util.Vector;
 
-public class MMap {
+public class StaticMap {
 
   public PApplet parent;
   public AbstractMapProvider provider;
@@ -11,7 +14,7 @@ public class MMap {
   public Coordinate coordinate;
   public Point2f offset;
 
-  public MMap(PApplet parent, AbstractMapProvider provider, Point2f dimensions, Location location, int zoom) {
+  public StaticMap(PApplet parent, AbstractMapProvider provider, Point2f dimensions, Location location, int zoom) {
     this.parent = parent;
     MapCenter center = calculateMapCenter(provider, provider.locationCoordinate(location).zoomTo(zoom));
     this.provider = provider;
@@ -20,7 +23,7 @@ public class MMap {
     this.offset = center.point;
   }
 
-  public MMap(PApplet parent, AbstractMapProvider provider, Point2f dimensions, Coordinate coordinate, Point2f offset) {
+  public StaticMap(PApplet parent, AbstractMapProvider provider, Point2f dimensions, Coordinate coordinate, Point2f offset) {
     // Instance of a map intended for drawing to an image.
     // provider
     //   Instance of IMapProvider         
@@ -348,9 +351,9 @@ public class MMap {
       String[] urls = provider.getTileUrls(coord);
 
       if (verbose) {
-        MMap.this.parent.print("Requesting ");
-        MMap.this.parent.print(PApplet.join(urls, ", "));
-        MMap.this.parent.println(" - attempt no. " + attempt);// + " in thread', thread.get_ident()
+        StaticMap.this.parent.print("Requesting ");
+        StaticMap.this.parent.print(PApplet.join(urls, ", "));
+        StaticMap.this.parent.println(" - attempt no. " + attempt);// + " in thread', thread.get_ident()
       }
 
       this.imgs = new PImage[urls.length];
@@ -363,10 +366,10 @@ public class MMap {
             type = urls[i].indexOf("png.maps.yimg") >= 0 ? "png" : urls[i].indexOf("aerial.maps.yimg") >= 0 ? "jpg" : null;
           }
 	  if (type != null) { 
-            imgs[i] = MMap.this.parent.loadImage(urls[i], type);
+            imgs[i] = StaticMap.this.parent.loadImage(urls[i], type);
           }
           else {
-            imgs[i] = MMap.this.parent.loadImage(urls[i]);
+            imgs[i] = StaticMap.this.parent.loadImage(urls[i]);
           }
         }
       }
@@ -384,9 +387,9 @@ public class MMap {
       }
 
       if (verbose) {
-        MMap.this.parent.print("Received ");
-        MMap.this.parent.print(PApplet.join(urls,", "));
-        MMap.this.parent.println(" - attempt no. " + attempt);// 'in thread', thread.get_ident()
+        StaticMap.this.parent.print("Received ");
+        StaticMap.this.parent.print(PApplet.join(urls,", "));
+        StaticMap.this.parent.println(" - attempt no. " + attempt);// 'in thread', thread.get_ident()
       }
 
       /* if lock.acquire():

@@ -1,6 +1,8 @@
-package com.modestmaps;
+package com.modestmaps.providers;
 
 import processing.core.*;
+import com.modestmaps.core.*;
+import com.modestmaps.geo.*;
 
 public abstract class AbstractMapProvider {
 

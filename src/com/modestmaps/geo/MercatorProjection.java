@@ -1,6 +1,7 @@
-package com.modestmaps;
+package com.modestmaps.geo;
 
 import processing.core.*;
+import com.modestmaps.core.Point2f;
 
 public class MercatorProjection extends AbstractProjection {
 
