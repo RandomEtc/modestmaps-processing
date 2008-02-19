@@ -13,15 +13,15 @@ float tx = 0, ty = 0;
 float sc = 1;
 float a = 0.0;
 
+PFont f;
+
 void setup() {
-  size(screen.width/2, screen.height/2, P3D);
+  size(500, 300);
 
   tx = -128;
   ty = -128;
   
-  PFont f = createFont("Helvetica",16);
-  textFont(f,16);
-  textAlign(LEFT, TOP);
+  f = createFont("Helvetica",16);
 }
 
 void draw() {
@@ -31,7 +31,6 @@ void draw() {
   translate(width/2, height/2);
   scale(sc,sc);
   rotate(radians(a));
-  translate(-width/2, -height/2);
   translate(tx,ty);
 
   float minX = screenX(0,0);
@@ -39,7 +38,7 @@ void draw() {
   float maxX = screenX(256,256);
   float maxY = screenY(256,256);
 
-  println("map: " + nf(minX,1,3) + " " + nf(minY,1,3) + " : " + nf(maxX,1,3) + " " + nf(maxY,1,3));
+//  println("map: " + nf(minX,1,3) + " " + nf(minY,1,3) + " : " + nf(maxX,1,3) + " " + nf(maxY,1,3));
   
   // do the diagonal because we might rotate
   float sideLength = dist(minX, minY, maxX, maxY);
@@ -51,18 +50,18 @@ void draw() {
 
   int cols = (int)pow(2,zoom);
   int rows = (int)pow(2,zoom);
-  println("rows/cols: " + rows + "/" + cols);
-  println("tileCount: " + (rows * cols));
+//  println("rows/cols: " + rows + "/" + cols);
+//  println("tileCount: " + (rows * cols));
 
-  int screenCols = (int)ceil(cols * dist(0,0,width,height) / sideLength);
-  println("screenCols: " + screenCols);
+//  int screenCols = (int)ceil(cols * dist(0,0,width,height) / sideLength);
+//  println("screenCols: " + screenCols);
 
   // find the biggest box the screen would fit in, aligned with the map:
   float screenMinX = 0;
   float screenMinY = 0;
   float screenMaxX = width;
   float screenMaxY = height;
-  println("screen: " + nf(screenMinX,1,3) + " " + nf(screenMinY,1,3) + " : " + nf(screenMaxX,1,3) + " " + nf(screenMaxY,1,3));
+//  println("screen: " + nf(screenMinX,1,3) + " " + nf(screenMinY,1,3) + " : " + nf(screenMaxX,1,3) + " " + nf(screenMaxY,1,3));
   // TODO align this box!
   
   // find start and end columns
@@ -70,7 +69,7 @@ void draw() {
   int maxCol = (int)ceil(cols * (screenMaxX-minX) / (maxX-minX));
   int minRow = (int)floor(rows * (screenMinY-minY) / (maxY-minY));
   int maxRow = (int)ceil(rows * (screenMaxY-minY) / (maxY-minY));
-  println("row/col: " + minCol + ", " + minRow + " : " + maxCol + ", " + maxRow);
+//  println("row/col: " + minCol + ", " + minRow + " : " + maxCol + ", " + maxRow);
 
   pushMatrix();
   scale(1.0/pow(2,zoom));
@@ -81,6 +80,7 @@ void draw() {
       rect(col*256,row*256,256,256);
       fill(255);
       noStroke();
+      textFont(f,16);
       textAlign(LEFT, TOP);
       text("c:"+col+" "+"r:"+row+" "+"z:"+zoom, col*256, row*256);
 /*      textAlign(RIGHT, TOP);
@@ -118,7 +118,7 @@ void draw() {
     }
   }
 
-  println();
+//  println();
   
 }
 

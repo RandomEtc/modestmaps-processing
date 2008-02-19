@@ -34,9 +34,9 @@ class ZoomButton extends Button {
   void draw() {
     super.draw();
     stroke(0);
-    line(x+2,y+h/2,x+w-2,y+h/2);
+    line(x+3,y+h/2,x+w-3,y+h/2);
     if (in) {
-      line(x+w/2,y+2,x+w/2,y+h-2);
+      line(x+w/2,y+3,x+w/2,y+h-3);
     }
   }
   
@@ -56,24 +56,24 @@ class PanButton extends Button {
     stroke(0);
     switch(dir) {
       case UP:
-        line(x+w/2,y+2,x+w/2,y+h-2);
-        line(x-2+w/2,y+4,x+w/2,y+2);
-        line(x+2+w/2,y+4,x+w/2,y+2);
+        line(x+w/2,y+3,x+w/2,y+h-3);
+        line(x-3+w/2,y+6,x+w/2,y+3);
+        line(x+3+w/2,y+6,x+w/2,y+3);
         break;
       case DOWN:
-        line(x+w/2,y+2,x+w/2,y+h-2);
-        line(x-2+w/2,y+h-4,x+w/2,y+h-2);
-        line(x+2+w/2,y+h-4,x+w/2,y+h-2);
+        line(x+w/2,y+3,x+w/2,y+h-3);
+        line(x-3+w/2,y+h-6,x+w/2,y+h-3);
+        line(x+3+w/2,y+h-6,x+w/2,y+h-3);
         break;
       case LEFT:
-        line(x+2,y+h/2,x+w-2,y+h/2);
-        line(x+2,y+h/2,x+4,y-2+h/2);
-        line(x+2,y+h/2,x+4,y+2+h/2);
+        line(x+3,y+h/2,x+w-3,y+h/2);
+        line(x+3,y+h/2,x+6,y-3+h/2);
+        line(x+3,y+h/2,x+6,y+3+h/2);
         break;
       case RIGHT:
-        line(x+2,y+h/2,x+w-2,y+h/2);
-        line(x+w-2,y+h/2,x+w-4,y-2+h/2);
-        line(x+w-2,y+h/2,x+w-4,y+2+h/2);
+        line(x+3,y+h/2,x+w-3,y+h/2);
+        line(x+w-3,y+h/2,x+w-6,y-3+h/2);
+        line(x+w-3,y+h/2,x+w-6,y+3+h/2);
         break;
     }
   }

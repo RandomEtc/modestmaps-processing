@@ -19,6 +19,8 @@ PanButton right = new PanButton(22,41,14,14,RIGHT);
 // all the buttons in one place, for looping:
 Button[] buttons = { in, out, up, down, left, right };
 
+PFont font;
+
 void setup() {
   size(600, 400);
   smooth();
@@ -32,8 +34,7 @@ void setup() {
   // (try some out, or use getlatlon.com to search for more)
 
   // set a default font for labels
-  PFont font = createFont("Helvetica", 12);
-  textFont(font, 12);
+  font = createFont("Helvetica", 12);
 
   // enable the mouse wheel, for zooming
   addMouseWheelListener(new java.awt.event.MouseWheelListener() { 
@@ -95,6 +96,8 @@ void draw() {
       map.ty = -128; 
     }
   }
+
+  textFont(font, 12);
 
   // grab the lat/lon location under the mouse point:
   Location location = map.pointLocation(mouseX, mouseY);
