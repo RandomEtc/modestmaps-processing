@@ -49,6 +49,16 @@ public class InteractiveMap implements PConstants {
   // for loading tiles from the inside first
   QueueSorter queueSorter = new QueueSorter();
 
+  /** default to Microsoft Hybrid */
+  InteractiveMap(PApplet p) {
+    this(p, new Microsoft.HybridProvider());
+  }
+
+  /** new map using applet width and height, and given provider */
+  InteractiveMap(PApplet p, AbstractMapProvider provider) {
+    this(p, provider, p.width, p.height);
+  }
+
   /** make a new interactive map, using the given provider, of the given width and height */
   InteractiveMap(PApplet p, AbstractMapProvider provider, float width, float height) {
 
@@ -297,10 +307,12 @@ public class InteractiveMap implements PConstants {
   }
 
   void setMapProvider(AbstractMapProvider provider) {
-    this.provider = provider;
-    images.clear();
-    queue.clear();
-    pending.clear();
+    if (this.provider.getClass() != provider.getClass()) {
+      this.provider = provider;
+      images.clear();
+      queue.clear();
+      pending.clear();
+    }
   }
 
   Point2f locationPoint(Location location) {

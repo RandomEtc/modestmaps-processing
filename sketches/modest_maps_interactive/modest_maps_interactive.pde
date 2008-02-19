@@ -1,9 +1,21 @@
 
 InteractiveMap map;
 
-ZoomButton in, out;
-PanButton up, down, left, right;
-Button[] buttons;
+ZoomButton out = new ZoomButton(5,5,14,14,false);
+ZoomButton in = new ZoomButton(22,5,14,14,true);
+PanButton up = new PanButton(14,25,14,14,UP);
+PanButton down = new PanButton(14,57,14,14,DOWN);
+PanButton left = new PanButton(5,41,14,14,LEFT);
+PanButton right = new PanButton(22,41,14,14,RIGHT);
+
+Button[] buttons = { in, out, up, down, left, right };
+
+float startTx, endTx;
+float startTy, endTy;
+float startSc, endSc;
+
+int startTime;
+int duration;
 
 void setup() {
   size(screen.width/2, screen.height/2);
@@ -15,24 +27,15 @@ void setup() {
     }
   }); 
 
-  map = new InteractiveMap(this, new Microsoft.HybridProvider(), width, height);
+  map = new InteractiveMap(this);
 
-  Location location = new Location(37.784, -122.406); // san francisco
-
-  map.setCenterZoom(location, 18); 
-
-  out = new ZoomButton(5,5,14,14,false);
-  in = new ZoomButton(22,5,14,14,true);
-  up = new PanButton(14,25,14,14,UP);
-  down = new PanButton(14,57,14,14,DOWN);
-  left = new PanButton(5,41,14,14,LEFT);
-  right = new PanButton(22,41,14,14,RIGHT);
-
-  buttons = new Button[] { 
-    in, out, up, down, left, right     };
+  // London from getlatlon.com, thanks Simon!
+  map.setCenterZoom(new Location(51.500152, -0.126236), 11);
 
   textFont(createFont("Helvetica", 12), 12);
 
+  startTime = millis() + 1000; 
+  duration = 5000;
 }
 
 void draw() {
