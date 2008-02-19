@@ -1,4 +1,13 @@
 
+//
+// This was a test for a matrix-math-based continuous pan/zoom set-up for
+// Modest Maps, which works, and has subsequently been turned into a library.
+//
+// There may be bugs in this sketch, and they won't be fixed.  
+//
+// I didn't get around to doing rotations.
+//
+
 // pan, zoom and rotate
 float tx = 0, ty = 0;
 float sc = 1;
@@ -7,8 +16,8 @@ float a = 0.0;
 void setup() {
   size(screen.width/2, screen.height/2, P3D);
 
-  tx = -128 + width/2;
-  ty = -128 + height/2;
+  tx = -128;
+  ty = -128;
   
   PFont f = createFont("Helvetica",16);
   textFont(f,16);
@@ -49,10 +58,10 @@ void draw() {
   println("screenCols: " + screenCols);
 
   // find the biggest box the screen would fit in, aligned with the map:
-  float screenMinX = -tx;
-  float screenMinY = -ty;
-  float screenMaxX = width-tx;
-  float screenMaxY = height-ty;
+  float screenMinX = 0;
+  float screenMinY = 0;
+  float screenMaxX = width;
+  float screenMaxY = height;
   println("screen: " + nf(screenMinX,1,3) + " " + nf(screenMinY,1,3) + " : " + nf(screenMaxX,1,3) + " " + nf(screenMaxY,1,3));
   // TODO align this box!
   
@@ -103,8 +112,8 @@ void draw() {
     }
     else if (key == ' ') {
       sc = 1.0;
-      tx = 0;
-      ty = 0; 
+      tx = -128;
+      ty = -128; 
       a = 0;
     }
   }

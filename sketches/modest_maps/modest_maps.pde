@@ -1,4 +1,13 @@
 
+//
+// This is a standalone port of the Python version of Modest Maps,
+// based off the version from around 13th February 2008.
+//
+// It works, but I won't be fixing bugs.  It's all been ported to
+// .java files and will shortly be released as a library.
+//
+//
+
 void setup() {
   size(600, 600);
   runTests();

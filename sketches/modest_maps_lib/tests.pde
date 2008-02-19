@@ -21,8 +21,8 @@ boolean doMapTests(boolean quiet) {
 
   boolean passed = true;
 
-  MMap m = new MMap(this, new Google.RoadProvider(), new Point2f(600, 600), new Coordinate(3165, 1313, 13), new Point2f(-144, -94));
-  Point2f p = m.locationPoint(new Location(37.804274, -122.262940));
+  StaticMap m = new StaticMap(this, new Google.RoadProvider(), new Point2f(600, 600), new Coordinate(3165, 1313, 13), new Point2f(-144, -94));
+  Point2f p = m.locationPoint2f(new Location(37.804274, -122.262940));
   passed = passed && p.toString().equals("(370.688, 342.438)");
   if (!quiet) println(passed);
   // !!! this is what the python version gives (probably floats vs doubles?)
@@ -160,27 +160,27 @@ void doTilesTest() {
    
    */
 
-  Coordinate c = Tiles.fromMicrosoftRoad("0");
+  Coordinate c = Microsoft.fromMicrosoftRoad("0");
   println(c.column == 0.0 && c.row == 0.0 && c.zoom == 1.0);
-  Coordinate d = Tiles.fromMicrosoftRoad("0230102122203031");
+  Coordinate d = Microsoft.fromMicrosoftRoad("0230102122203031");
   println(d.column == 25322.0 && d.row == 10507.0 && d.zoom == 16.0);
-  Coordinate e = Tiles.fromMicrosoftRoad("0230102033330212");
+  Coordinate e = Microsoft.fromMicrosoftRoad("0230102033330212");
   println(e.column == 25333.0 && e.row == 10482.0 && e.zoom == 16.0);
 
-  println( "0".equals( Tiles.toMicrosoftRoad(0, 0, 1) ) );
-  println( "0230102122203031".equals(Tiles.toMicrosoftRoad(10507, 25322, 16) ) );
-  println( "0230102033330212".equals(Tiles.toMicrosoftRoad(10482, 25333, 16) ) );
+  println( "0".equals( Microsoft.toMicrosoftRoad(0, 0, 1) ) );
+  println( "0230102122203031".equals(Microsoft.toMicrosoftRoad(10507, 25322, 16) ) );
+  println( "0230102033330212".equals(Microsoft.toMicrosoftRoad(10482, 25333, 16) ) );
 
-  c = Tiles.fromMicrosoftAerial("0");
+  c = Microsoft.fromMicrosoftAerial("0");
   println(c.column == 0.0 && c.row == 0.0 && c.zoom == 1.0);
-  d = Tiles.fromMicrosoftAerial("0230102122203031");
+  d = Microsoft.fromMicrosoftAerial("0230102122203031");
   println(d.column == 25322.0 && d.row == 10507.0 && d.zoom == 16.0);
-  e = Tiles.fromMicrosoftAerial("0230102033330212");
+  e = Microsoft.fromMicrosoftAerial("0230102033330212");
   println(e.column == 25333.0 && e.row == 10482.0 && e.zoom == 16.0);
 
-  println( "0".equals( Tiles.toMicrosoftAerial(0, 0, 1) ) );
-  println( "0230102122203031".equals(Tiles.toMicrosoftAerial(10507, 25322, 16) ) );
-  println( "0230102033330212".equals(Tiles.toMicrosoftAerial(10482, 25333, 16) ) );
+  println( "0".equals( Microsoft.toMicrosoftAerial(0, 0, 1) ) );
+  println( "0230102122203031".equals(Microsoft.toMicrosoftAerial(10507, 25322, 16) ) );
+  println( "0230102033330212".equals(Microsoft.toMicrosoftAerial(10482, 25333, 16) ) );
 
 }
 

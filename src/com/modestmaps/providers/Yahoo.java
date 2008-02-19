@@ -59,7 +59,7 @@ public class Yahoo {
 
   public static Coordinate toYahoo(Coordinate coord) {
     // Return x, y, z for Yahoo tile column, row, zoom.
-    return new Coordinate(coord.row, (int)PApplet.pow(2, coord.zoom - 1) - coord.row - 1, 18 - coord.zoom);
+    return new Coordinate((int)PApplet.pow(2, coord.zoom - 1) - coord.row - 1, coord.column, 18 - coord.zoom);
   }
 
   public static Coordinate fromYahooRoad(Coordinate coord) {
