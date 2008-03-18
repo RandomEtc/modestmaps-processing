@@ -34,9 +34,9 @@ void doGoogleTest() {
 
 abstract class GoogleProvider extends AbstractMapProvider{
 
-  String ROAD_VERSION = "w2.66";
-  String AERIAL_VERSION = "24";
-  String HYBRID_VERSION = "w2t.66";
+  String ROAD_VERSION = "w2.69";
+  String AERIAL_VERSION = "25";
+  String HYBRID_VERSION = "w2t.69";
   String TERRAIN_VERSION = "w2p.64";
 
   GoogleProvider() {

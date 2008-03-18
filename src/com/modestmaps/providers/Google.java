@@ -9,9 +9,9 @@ public class Google {
   
   public static abstract class GoogleProvider extends AbstractMapProvider {
   
-    public static final String ROAD_VERSION = "w2.66";
-    public static final String AERIAL_VERSION = "24";
-    public static final String HYBRID_VERSION = "w2t.66";
+    public static final String ROAD_VERSION = "w2.69";
+    public static final String AERIAL_VERSION = "25";
+    public static final String HYBRID_VERSION = "w2t.69";
     public static final String TERRAIN_VERSION = "w2p.64";
   
     public GoogleProvider() {
