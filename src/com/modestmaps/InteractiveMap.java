@@ -279,7 +279,7 @@ public class InteractiveMap implements PConstants {
 
   /** sets scale according to given zoom level, should leave you with pixel perfect tiles */
   public void setZoom(int zoom) {
-    sc = p.pow(2.0f, zoom-1); 
+    sc = p.pow(2.0f, zoom); 
   }
 
   public void zoom(int dir) {
