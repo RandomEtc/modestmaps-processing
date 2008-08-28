@@ -34,10 +34,10 @@ void doGoogleTest() {
 
 abstract class GoogleProvider extends AbstractMapProvider{
 
-  String ROAD_VERSION = "w2.69";
-  String AERIAL_VERSION = "25";
-  String HYBRID_VERSION = "w2t.69";
-  String TERRAIN_VERSION = "w2p.64";
+  String ROAD_VERSION = "w2.80";
+  String AERIAL_VERSION = "30";
+  String HYBRID_VERSION = "w2t.80";
+  String TERRAIN_VERSION = "w2p.81";
 
   GoogleProvider() {
     super( new MercatorProjection(26, new Transformation(1.068070779e7, 0, 3.355443185e7, 0, -1.068070890e7, 3.355443057e7) ) );

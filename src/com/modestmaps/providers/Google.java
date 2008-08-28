@@ -9,10 +9,10 @@ public class Google {
   
   public static abstract class GoogleProvider extends AbstractMapProvider {
   
-    public static final String ROAD_VERSION = "w2.69";
-    public static final String AERIAL_VERSION = "25";
-    public static final String HYBRID_VERSION = "w2t.69";
-    public static final String TERRAIN_VERSION = "w2p.64";
+    public static final String ROAD_VERSION = "w2.80";
+    public static final String AERIAL_VERSION = "30";
+    public static final String HYBRID_VERSION = "w2t.80";
+    public static final String TERRAIN_VERSION = "w2p.81";
   
     public GoogleProvider() {
       super( new MercatorProjection(26, new Transformation(1.068070779e7f, 0.0f, 3.355443185e7f, 0.0f, -1.068070890e7f, 3.355443057e7f) ) );
