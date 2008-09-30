@@ -9,10 +9,10 @@ public class Google {
   
   public static abstract class GoogleProvider extends AbstractMapProvider {
   
-    public static final String ROAD_VERSION = "w2.80";
-    public static final String AERIAL_VERSION = "30";
-    public static final String HYBRID_VERSION = "w2t.80";
-    public static final String TERRAIN_VERSION = "w2p.81";
+    public static final String ROAD_VERSION = "w2.83";
+    public static final String AERIAL_VERSION = "32";
+    public static final String HYBRID_VERSION = "w2t.83";
+    public static final String TERRAIN_VERSION = "app.81";
   
     public GoogleProvider() {
       super( new MercatorProjection(26, new Transformation(1.068070779e7f, 0.0f, 3.355443185e7f, 0.0f, -1.068070890e7f, 3.355443057e7f) ) );
@@ -32,6 +32,7 @@ public class Google {
   
   public static class RoadProvider extends GoogleProvider {
     public String[] getTileUrls(Coordinate coordinate) {
+      // TODO: http://mt1.google.com/mt?v=w2.83&hl=en&x=10513&s=&y=25304&z=16&s=Gal
       String url = "http://mt" + (int)random(0, 4) + ".google.com/mt?n=404&v=" + ROAD_VERSION + "&" + getZoomString(sourceCoordinate(coordinate));
       return new String[] { url };
     }   
@@ -43,6 +44,7 @@ public class Google {
   
   public static class AerialProvider extends GoogleProvider {
     public String[] getTileUrls(Coordinate coordinate) {
+      // TODO: http://khm1.google.com/kh?v=32&hl=en&x=10513&s=&y=25304&z=16&s=Gal
       String url = "http://kh" + (int)random(0, 4) + ".google.com/kh?n=404&v=" + AERIAL_VERSION + "&t=" + getZoomString(sourceCoordinate(coordinate));
       return new String[] { url };
     }
@@ -53,6 +55,7 @@ public class Google {
   
   public static class HybridProvider extends GoogleProvider {
     public String[] getTileUrls(Coordinate coordinate) {
+      // TODO: http://mt0.google.com/mt?v=w2t.83&hl=en&x=10510&s=&y=25303&z=16&s=G
       String under = new AerialProvider().getTileUrls(coordinate)[0];
       String over = "http://mt" + (int)random(0, 4) + ".google.com/mt?n=404&v=" + HYBRID_VERSION + "&" + getZoomString(sourceCoordinate(coordinate));
       return new String[] { under, over };
@@ -65,6 +68,7 @@ public class Google {
   
   public static class TerrainProvider extends RoadProvider {
     public String[] getTileUrls(Coordinate coordinate) {
+      // TODO: http://mt1.google.com/mt?v=app.81&hl=en&x=5255&s=&y=12651&z=15&s=
       String url = "http://mt" + (int)random(0, 4) + ".google.com/mt?n=404&v=" + TERRAIN_VERSION + "&" + getZoomString(sourceCoordinate(coordinate));
       return new String[] { url };
     }
