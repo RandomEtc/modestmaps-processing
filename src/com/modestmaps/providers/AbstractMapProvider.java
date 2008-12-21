@@ -8,7 +8,6 @@ public abstract class AbstractMapProvider {
 
   public static String[] ids =  { 
   "MICROSOFT_ROAD", "MICROSOFT_AERIAL", "MICROSOFT_HYBRID",
-  "GOOGLE_ROAD",    "GOOGLE_AERIAL",    "GOOGLE_HYBRID",
   "YAHOO_ROAD",     "YAHOO_AERIAL",     "YAHOO_HYBRID",
   "BLUE_MARBLE",
   "OPEN_STREET_MAP" };
