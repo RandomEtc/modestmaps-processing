@@ -35,13 +35,24 @@ void setup() {
   smooth();
 
   // create a new map, optionally specify a provider
-  map = new InteractiveMap(this, new Microsoft.RoadProvider());
+  
+  // OpenStreetMap would be like this:
+  //map = new InteractiveMap(this, new OpenStreetMapProvider());
+  // but it's a free open source project, so don't bother their server too much
+  
+  // AOL/MapQuest provides open tiles too
+  // see http://developer.mapquest.com/web/products/open/map for terms
+  // and this is how to use them:
+  String template = "http://{S}.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png";
+  String[] subdomains = new String[] { "otile1", "otile2", "otile3", "otile4" }; // optional
+  map = new InteractiveMap(this, new TemplatedMapProvider(template, subdomains));
+  
   // others would be "new Microsoft.HybridProvider()" or "new Microsoft.AerialProvider()"
   // the Google ones get blocked after a few hundred tiles
   // the Yahoo ones look terrible because they're not 256px squares :)
 
   // set the initial location and zoom level to London:
-  //  map.setCenterZoom(new Location(51.500, -0.126), 11);
+  map.setCenterZoom(new Location(51.500, -0.126), 11);  
   // zoom 0 is the whole world, 19 is street level
   // (try some out, or use getlatlon.com to search for more)
 
@@ -53,8 +64,7 @@ void setup() {
     public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) { 
       mouseWheel(evt.getWheelRotation());
     }
-  }
-  ); 
+  }); 
 
 }
 
