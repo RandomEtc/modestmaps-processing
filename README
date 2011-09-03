@@ -1,0 +1,24 @@
+Modest Maps is a library that originated at Stamen Design (stamen.com) for 
+displaying and interacting with tile based maps, like Google Maps, but with
+the potential for a more diverse set of cartography and interaction styles.
+
+Modest Maps for Processing was written quite a while ago and hasn't been
+updated very much since but it still works quite well. I've made this new
+github repository because we're winding down our use of Google Code and svn
+for managing Modest Maps projects.
+
+There are also mature javascript and python versions, a nearly-ready 
+OpenFrameworks version and a quite complete Cinder version availabe on 
+github as well:
+
+* https://github.com/stamen/modestmaps-js
+* https://github.com/stamen/modestmaps-py
+* https://github.com/RandomEtc/modestmaps-cinder
+* https://github.com/RandomEtc/modestmaps-of
+
+As with all other versions of Modest Maps, this Processing version is made
+available under the BSD license. Basically this means use it for whatever 
+you want, don't blame us, don't claim endorsement and please credit the 
+library by name somewhere in your website or documentation. See LICENSE for
+the actual license though, I am not a lawyer :)
+
