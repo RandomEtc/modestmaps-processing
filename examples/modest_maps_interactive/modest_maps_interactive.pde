@@ -1,3 +1,4 @@
+import processing.opengl.*;
 import com.modestmaps.*;
 import com.modestmaps.core.*;
 import com.modestmaps.geo.*;
@@ -27,8 +28,10 @@ PFont font;
 
 boolean gui = true;
 
+double tx, ty, sc;
+
 void setup() {
-  size(screenWidth/2, screenHeight/2);
+  size(640, 480, OPENGL);
   smooth();
 
   // create a new map, optionally specify a provider
@@ -50,7 +53,8 @@ void setup() {
     public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) { 
       mouseWheel(evt.getWheelRotation());
     }
-  }); 
+  }
+  ); 
 
 }
 
@@ -128,19 +132,18 @@ void draw() {
     textAlign(RIGHT, BOTTOM);
     text("map: " + location, width-5, height-5);
 
-/*
     location = new Location(51.500, -0.126);
     Point2f p = map.locationPoint(location);
 
     fill(0,255,128);
     stroke(255,255,0);
-    ellipse(p.x, p.y, 10, 10); */
+    ellipse(p.x, p.y, 10, 10);
   }  
-  
+
   println((float)map.sc);
   println((float)map.tx + " " + (float)map.ty);
   println();
-  
+
 }
 
 void keyReleased() {
@@ -177,12 +180,20 @@ void mouseDragged() {
 
 // zoom in or out:
 void mouseWheel(int delta) {
-  if (delta > 0) {
-    map.sc *= 1.05;
+  float sc = 1.0;
+  if (delta < 0) {
+    sc = 1.05;
   }
-  else if (delta < 0) {
-    map.sc *= 1.0/1.05; 
+  else if (delta > 0) {
+    sc = 1.0/1.05; 
   }
+  float mx = mouseX - width/2;
+  float my = mouseY - height/2;
+  map.tx -= mx/map.sc;
+  map.ty -= my/map.sc;
+  map.sc *= sc;
+  map.tx += mx/map.sc;
+  map.ty += my/map.sc;
 }
 
 // see if we're over any buttons, and respond accordingly:
@@ -206,3 +217,4 @@ void mouseClicked() {
     map.panRight();
   }
 }
+
