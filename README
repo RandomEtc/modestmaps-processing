@@ -22,3 +22,6 @@ you want, don't blame us, don't claim endorsement and please credit the
 library by name somewhere in your website or documentation. See LICENSE for
 the actual license though, I am not a lawyer :)
 
+This repository includes an out of date copy of core.jar from Processing.
+Processing core is distributed under the LGPL license, see the Processing
+dowload page for more details: http://processing.org/download/
