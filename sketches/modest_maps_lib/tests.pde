@@ -5,7 +5,6 @@ boolean runTests(boolean quiet) {
   passed = passed && doYahooTests(quiet); 
   doTilesTest();
   doMicrosoftTest();
-  doGoogleTest();
   doGeoTest();
   doCoreTest();
   return passed;
@@ -21,7 +20,7 @@ boolean doMapTests(boolean quiet) {
 
   boolean passed = true;
 
-  StaticMap m = new StaticMap(this, new Google.RoadProvider(), new Point2f(600, 600), new Coordinate(3165, 1313, 13), new Point2f(-144, -94));
+  StaticMap m = new StaticMap(this, new Microsoft.RoadProvider(), new Point2f(600, 600), new Coordinate(3165, 1313, 13), new Point2f(-144, -94));
   Point2f p = m.locationPoint2f(new Location(37.804274, -122.262940));
   passed = passed && p.toString().equals("(370.688, 342.438)");
   if (!quiet) println(passed);
@@ -207,39 +206,6 @@ void doMicrosoftTest() {
   urls = p.getTileUrls(new Coordinate(25333, 10482, 16));
   println( urls[0].startsWith("http://h") && urls[0].endsWith(".ortho.tiles.virtualearth.net/tiles/h0230102033330212.jpeg?g=90") );
 
-}
-
-void doGoogleTest() {
-
-  println();
-  println("google test");
-  println();
-
-  AbstractMapProvider p = new Google.RoadProvider();
-  String[] urls = p.getTileUrls(new Coordinate(25322, 10507, 16));
-  println(urls);
-  println( urls[0].startsWith("http://mt") && urls[0].endsWith("&x=10507&y=25322&zoom=1") ); //('....google.com/mt?n=404&v=...',)
-
-  urls = p.getTileUrls(new Coordinate(25333, 10482, 16));
-  println( urls[0].startsWith("http://mt") && urls[0].endsWith("&x=10482&y=25333&zoom=1") ); //('....google.com/mt?n=404&v=...',)
-
-  p = new Google.AerialProvider();
-  urls = p.getTileUrls(new Coordinate(25322, 10507, 16));
-  println( urls[0].startsWith("http://kh") && urls[0].endsWith("&t=tqtsqrqtrtttqsqsr") ); //google.com/kh?n=404&v=
-
-  urls = p.getTileUrls(new Coordinate(25333, 10482, 16));
-  println( urls[0].startsWith("http://kh") && urls[0].endsWith("&t=tqtsqrqtqssssqtrt") ); //google.com/kh?n=404&v=
-
-  p = new Google.HybridProvider();
-  urls = p.getTileUrls(new Coordinate(25322, 10507, 16));
-  println(urls);
-  println( urls[0].startsWith("http://kh") && urls[0].endsWith("&t=tqtsqrqtrtttqsqsr") ); //google.com/kh?n=404&v=
-  println( urls[1].startsWith("http://mt") && urls[1].endsWith("&x=10507&y=25322&zoom=1") ); //google.com/mt?n=404&v=
-
-  urls = p.getTileUrls(new Coordinate(25333, 10482, 16));
-  println(urls);
-  println( urls[0].startsWith("http://kh") && urls[0].endsWith("&t=tqtsqrqtqssssqtrt") ); //google.com/kh?n=404&v=
-  println( urls[1].startsWith("http://mt") && urls[1].endsWith("&x=10482&y=25333&zoom=1") ); //google.com/mt?n=404&v=
 }
 
 void doGeoTest() {

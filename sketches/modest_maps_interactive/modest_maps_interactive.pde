@@ -1,8 +1,11 @@
+import com.modestmaps.*;
+import com.modestmaps.core.*;
+import com.modestmaps.geo.*;
+import com.modestmaps.providers.*;
 
 //
 // This is a test of the interactive Modest Maps library for Processing
-// the modestmaps.jar in the code folder of this sketch might not be 
-// entirely up to date - you have been warned!
+// You must have modestmaps in your libraries folder, see INSTALL for details
 //
 
 // this is the only bit that's needed to show a map:
@@ -25,7 +28,7 @@ PFont font;
 boolean gui = true;
 
 void setup() {
-  size(1280, 1024);
+  size(screenWidth/2, screenHeight/2);
   smooth();
 
   // create a new map, optionally specify a provider
@@ -47,8 +50,7 @@ void setup() {
     public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) { 
       mouseWheel(evt.getWheelRotation());
     }
-  }
-  ); 
+  }); 
 
 }
 
