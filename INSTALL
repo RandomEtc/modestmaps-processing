@@ -1,0 +1,19 @@
+Copy the /modestmaps folder to your Processing libraries folder.
+
+On a Mac, this should be in Documents/Processing/libraries, so you
+will have the following folder structure:
+
+/Documents
+  /Processing
+    /my_awesome_sketch
+    /art_and_science
+    /sticks_and_rocks
+    /CIA_dashboard
+    /i_am_rich_2
+    /libraries
+      /some_library
+      /another_library
+      /modestmaps
+        /library
+          /modestmaps.jar
+
