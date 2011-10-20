@@ -80,10 +80,14 @@
 
 	    // remember smooth setting so it can be reset 
 	    boolean smooth = p.g.smooth;
+	    int imageMode = p.g.imageMode;
 
 	    // !!! VERY IMPORTANT
 	    // (all the renderers apart from OpenGL will choke if you ask for smooth scaling of image calls)
 	    p.noSmooth();
+
+	    // we need this, or our tiles will not be drawn in the right place
+	    p.imageMode(p.CORNER);
 
 	    // translate and scale, from the middle
 	    p.pushMatrix();
@@ -243,6 +247,8 @@
 	    if (smooth) {
 	      p.smooth();
 	    }
+	    // restore image mode
+	    p.imageMode(imageMode);
 
 	  } 
 
