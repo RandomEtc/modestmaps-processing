@@ -120,9 +120,9 @@
 
 	    // find start and end columns
 	    int minCol = (int)p.floor(cols * (screenMinX-minX) / (maxX-minX));
-	    int maxCol = (int)p.ceil(cols * (screenMaxX-minX) / (maxX-minX));
+	    int maxCol = (int)p.ceil(cols * (screenMaxX-minX) / (maxX-minX)) - 1;
 	    int minRow = (int)p.floor(rows * (screenMinY-minY) / (maxY-minY));
-	    int maxRow = (int)p.ceil(rows * (screenMaxY-minY) / (maxY-minY));
+	    int maxRow = (int)p.ceil(rows * (screenMaxY-minY) / (maxY-minY)) - 1;
 
 	    // pad a bit, for luck (well, because we might be zooming out between zoom levels)
 	    minCol -= GRID_PADDING;
