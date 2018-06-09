@@ -31,8 +31,7 @@ boolean gui = true;
 double tx, ty, sc;
 
 void setup() {
-  size(640, 480, OPENGL);
-  smooth();
+  size(1280, 720);
 
   // create a new map, optionally specify a provider
   
@@ -42,10 +41,11 @@ void setup() {
   
   // AOL/MapQuest provides open tiles too
   // see http://developer.mapquest.com/web/products/open/map for terms
-  // and this is how to use them:
-  String template = "http://{S}.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png";
-  String[] subdomains = new String[] { "otile1", "otile2", "otile3", "otile4" }; // optional
-  map = new InteractiveMap(this, new TemplatedMapProvider(template, subdomains));
+  //// and this is how to use them:
+  //String template = "http://{S}.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png";
+  //String[] subdomains = new String[] { "otile1", "otile2", "otile3", "otile4" }; // optional
+  //map = new InteractiveMap(this, new TemplatedMapProvider(template, subdomains));
+  map = new InteractiveMap(this);
   
   // others would be "new Microsoft.HybridProvider()" or "new Microsoft.AerialProvider()"
   // the Google ones get blocked after a few hundred tiles
@@ -58,14 +58,6 @@ void setup() {
 
   // set a default font for labels
   font = createFont("Helvetica", 12);
-
-  // enable the mouse wheel, for zooming
-  addMouseWheelListener(new java.awt.event.MouseWheelListener() { 
-    public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) { 
-      mouseWheel(evt.getWheelRotation());
-    }
-  }); 
-
 }
 
 void draw() {
@@ -227,4 +219,3 @@ void mouseClicked() {
     map.panRight();
   }
 }
-

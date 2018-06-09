@@ -14,24 +14,22 @@ import com.modestmaps.providers.*;
 //
 
 void setup() {
-  size(screen.width/2, screen.height/2);
-  if (!runTests(false)) {
-    println("one or more tests failed");
-    exit();
-  }
-  noLoop();
-}
-
-void draw() {
-
+  size(1280, 720);
+  if (!runTests(false)) {    
+    println("one or more tests failed");    
+    exit();    
+  }    
+   noLoop();
+ }
+      
+ void draw() {
   StaticMap m = new StaticMap(this, new Microsoft.AerialProvider(), new Point2f(width/2, height), new Location(51.5, -0.137), 12);
-  
-  PImage img = m.draw(true);
-  image(img,0,0);  
-
+          
+   PImage img = m.draw(true);
+   image(img,0,0);
+      
   img = atkinsonDither(img);
-  image(img,width/2,0);  
-
-  println("done");
-  
-}
+  image(img,width/2,0);      
+      
+   println("done");
+ }

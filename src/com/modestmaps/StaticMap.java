@@ -222,7 +222,7 @@ public class StaticMap {
     //    # hang around until they are loaded or we run out of time...
     //    time.sleep(1)
 
-    PGraphics mapImg = parent.createGraphics(img_width, img_height, PApplet.JAVA2D);
+    PGraphics mapImg = parent.createGraphics(img_width, img_height);
     mapImg.beginDraw();
     
     for (int i = 0; i < tiles.size(); i++) {
@@ -400,7 +400,6 @@ public class StaticMap {
 
   }
 
-
   public class TileQueue extends Vector {
     // List of TileRequest objects, that's sensitive to when they're loaded.
     public boolean pending() {
@@ -412,6 +411,4 @@ public class StaticMap {
       return false; 
     }
   }
-
-
 }
