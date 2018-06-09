@@ -1,8 +1,10 @@
 # change these if you're not on a Mac, or don't run "make install" :)
 #PROCESSING_PATH = "/Applications/Processing.app/Contents/Resources/Java/core.jar"
-PROCESSING_PATH = "/home/notyours/processing-3.3.7/core/library/core.jar"
 #LIBRARY_PATH = "/Users/$(USER)/Documents/Processing/libraries/"
-LIBRARY_PATH = "/home/notyours/sketchbook/libraries/"
+
+# change these if you're on Linux and set them to actual paths
+PROCESSING_PATH = "/opt/processing-3.3.7/core/library/core.jar"
+LIBRARY_PATH = "/opt/sketchbook/libraries/"
 
 #modestmaps/library/modestmaps.jar:
 java6:
